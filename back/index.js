@@ -1,13 +1,16 @@
-const Msg = require('./models/messages');
-let ios = require('socket.io')
-require('./startup/connection')();
-const io = require('socket.io')(8080, {
+var express = require('express');
+var app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server, {
     cors: {
         origin: '*',
     }
 });
+const Msg = require('./models/messages');
+require('./startup/connection')();
 let users = {};
 io.on('connection', socket => {
+    //let userName = socket.handshake.query.userName;
     socket.on('new-user-joined', name => {
         //console.log(name)
         users[socket.id] = name;
@@ -18,4 +21,10 @@ io.on('connection', socket => {
         // await msg.save();
         socket.broadcast.emit('recieve', { message: message, name: users[socket.id] })
     })
+
 })
+server.listen(8080, {
+    cors: {
+        origin: '*',
+    }
+});

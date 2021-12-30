@@ -18,7 +18,7 @@ export class ChatsComponent implements OnInit {
 
   }
   setUserName(): void {
-   
+    this.userNameUpdate(this.userName);
   }
   userNameUpdate(name: string): void {
     this.socket = io.io(`https://chat-competent-programming.herokuapp.com/?userName=${name}`);
