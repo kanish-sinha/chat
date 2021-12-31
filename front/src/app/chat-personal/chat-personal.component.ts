@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../services/users.service';
 import * as io from 'socket.io-client'
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '../services/message.service';
 @Component({
   selector: 'app-chat-personal',
@@ -13,7 +13,7 @@ export class ChatPersonalComponent implements OnInit {
   url = 'http://localhost:8080'; message: any; recievermsg: any;
   socket: any
   constructor(private service: UsersService, private route: ActivatedRoute,
-    private messageService: MessageService) {
+    private messageService: MessageService, private router: Router) {
     this.service.getAllUser().subscribe(response => {
       this.users = response;
     })
@@ -63,5 +63,8 @@ export class ChatPersonalComponent implements OnInit {
     msgelement.textContent = message
     div?.appendChild(msgelement);
     this.socket.emit('send', { message: message, sender: this.sender, reciever: this.reciever })
+  }
+  user(item: any) {
+    this.router.navigate(['chat',this.sender,item._id])
   }
 }
