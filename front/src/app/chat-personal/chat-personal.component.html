@@ -33,7 +33,7 @@
                                 <!-- <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40"> -->
                             </div>
                             <div class="flex-grow-1 pl-3">
-                                <strong>User</strong>
+                                <strong>{{Name|uppercase}}</strong>
                             </div>
                         </div>
                     </div>
@@ -42,16 +42,18 @@
                         <div class="chat-messages p-4" id="box">
                             <div *ngFor="let item of arr">
                                 <div *ngIf="item.sender==sender;else elseblock" class="chat-message-right pb-4">
-                                    <div class="flex-shrink-1 rounded py-2 px-3 mr-3" style="background-color: cadetblue">
+                                    <div class="flex-shrink-1 rounded py-2 px-3 mr-3" style="background-color: cadetblue;">
                                         <div class="font-weight-bold mb-1">You</div>
                                         {{item.msg}}
                                     </div>
                                 </div>
                                 <br>
-                                <ng-template #elseblock class="chat-message-left pb-4">
-                                    <div class="flex-shrink-1 rounded py-2 px-3 ml-3" style="background-color: blanchedalmond;">
-                                        <div class="font-weight-bold mb-1">Kanish</div>
-                                        {{item.msg}}
+                                <ng-template #elseblock>
+                                    <div class="chat-message-left pb-4" style="margin-right: auto;">
+                                        <div class="flex-shrink-1 rounded py-2 px-3 ml-3" style="background-color: blanchedalmond;">
+                                            <div class="font-weight-bold mb-1">{{Name|titlecase}}</div>
+                                            {{item.msg}}
+                                        </div>
                                     </div>
                                 </ng-template>
                             </div>

@@ -6,7 +6,7 @@ router.get('/', async(req, res) => {
     res.json(user);
 })
 router.get('/:id', async(req, res) => {
-    let user = await User.findOne({ _id: req.params.id })
+    let user = await User.find({ _id: req.params.id })
     res.json(user);
 })
 router.post('/login', async(req, res) => {

@@ -12,17 +12,16 @@ export class ChatComponent implements OnInit {
   socket: any; currentuser: any;
   users: any
   url = "http://localhost:8080"
-  constructor(private userservice: UsersService, private route: ActivatedRoute,private router:Router) {
+  constructor(private userservice: UsersService, private route: ActivatedRoute, private router: Router) {
     this.socket = io.connect(this.url)
   }
   ngOnInit(): void {
     this.userservice.getAllUser().subscribe(response => {
       this.users = response
     })
+    this.currentuser=this.route.snapshot.paramMap.get('sender')
   }
   chat(user: any) {
-    if (this.userservice.loggedIn()) {
-      this.router.navigate(['chat', this.currentuser,user._id])
-    }
+    this.router.navigate(['chat', this.currentuser, user._id])
   }
 }
