@@ -10,8 +10,13 @@ import { MessageService } from '../services/message.service';
 })
 export class ChatPersonalComponent implements OnInit {
   users: any; sender: any; reciever: any; recieverName: any;
-  url = 'http://localhost:8080'; message: any; recievermsg: any;
-  socket: any
+  url = 'http://localhost:8080';
+  message: any; recievermsg: any; allmessage: any;
+  socket: any; arr: any; msgarr = [{
+    msg: '',
+    sender: '',
+    receiver: ''
+  }]
   constructor(private service: UsersService, private route: ActivatedRoute,
     private messageService: MessageService, private router: Router) {
     this.service.getAllUser().subscribe(response => {
@@ -24,11 +29,8 @@ export class ChatPersonalComponent implements OnInit {
     })
     this.sender = this.route.snapshot.paramMap.get('sender');
     this.reciever = this.route.snapshot.paramMap.get('reciever');
-    this.messageService.getSenderMsg(this.sender).subscribe(response => {
-      this.message = response
-    })
-    this.messageService.getRecieverMsg(this.reciever).subscribe(response => {
-      this.recievermsg = response
+    this.messageService.getAllMsg(this.sender, this.reciever).subscribe(response => {
+      this.f1(response);
     })
     this.service.getUser(this.reciever).subscribe(response => {
       this.recieverName = response
@@ -48,6 +50,9 @@ export class ChatPersonalComponent implements OnInit {
       div?.appendChild(msgelement);
     })
   }
+  f1(res: any) {
+    this.arr = res;
+  }
   send(msg: any) {
     let div = document.getElementById('box')
     let message = msg.value
@@ -65,6 +70,6 @@ export class ChatPersonalComponent implements OnInit {
     this.socket.emit('send', { message: message, sender: this.sender, reciever: this.reciever })
   }
   user(item: any) {
-    this.router.navigate(['chat',this.sender,item._id])
+    this.router.navigate(['chat', this.sender, item._id])
   }
 }

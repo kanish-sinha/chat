@@ -1,7 +1,6 @@
 const userrout = require('./routs/userorut')
 const express = require('express');
 const app = express();
-const messagerout = require('./routs/messagerout');
 const cors = require('cors')
 var server = require('http').createServer(app);
 var io = require('socket.io')(server, {
@@ -32,14 +31,25 @@ io.on('connection', socket => {
         socket.broadcast.emit('recieve', { message: message.message, name: users[socket.id] })
     })
 })
-app.get('/sender/:id', async(req, res) => {
-    let message = await Msg.find({ sender: req.params.id })
+app.get('/message/:sender/:receiver', async(req, res) => {
+    let msgarr = [];
+    let count = 0;
+    let message = await Msg
+        //.find({ $or: [{ sender: req.params.reciever }, { reciever: req.params.sender }, { sender: req.params.sender }, { reciever: req.params.reciever }] })
+        .find({ $or: [{ sender: req.params.sender }, { reciever: req.params.sender }] })
+    for (let i = 0; i < message.length; i++) {
+        // console.log(req.params.receiver)
+        if ((message[i].reciever == req.params.receiver) && (message[i].sender == req.params.sender) || (message[i].reciever == req.params.sender) && (message[i].sender == req.params.receiver)) {
+            msgarr[count] = message[i];
+            count++;
+        }
+    }
+    res.json(msgarr)
+})
+app.get('/message/:id', async(req, res) => {
+    let message = await Msg.find({ $or: [{ sender: req.params.id }, { reciever: req.params.id }] })
     res.json(message)
-});
-app.get('/reciever/:id', async(req, res) => {
-    let message = await Msg.find({ reciever: req.params.id })
-    res.json(message)
-});
+})
 app.use('/user', userrout)
 app.use('/user/:id', userrout)
 server.listen(8080, {

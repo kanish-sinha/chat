@@ -1,44 +1,28 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import * as io from 'socket.io-client'
+import { UsersService } from '../services/users.service';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
-  socket: any
+  socket: any; currentuser: any;
+  users: any
   url = "http://localhost:8080"
-  constructor() {
+  constructor(private userservice: UsersService, private route: ActivatedRoute,private router:Router) {
     this.socket = io.connect(this.url)
   }
   ngOnInit(): void {
-    let div = document.getElementById('chat-box')
-    const msgcontainer = document.querySelector('.container');
-    let names = prompt('enter name');
-    this.socket.emit('new-user-joined', names)
-  }
-  f1() {
-
-  }
-  send(val: any) {
-    let div = document.getElementById('box')
-    let message = val.value
-    val.value = "";
-    let msgelement = document.createElement('div');
-    msgelement.className = 'message right'
-    msgelement.style.float = 'right';
-    msgelement.style.clear = 'both'
-    msgelement.textContent = message
-    div?.appendChild(msgelement);
-    this.socket.emit('send', message)
-    this.socket.on('recieve', (data: any) => {
-      const msgelement = document.createElement('div');
-      msgelement.className = 'message left'
-      msgelement.style.float = 'left'
-      msgelement.style.clear = 'both'
-      msgelement.textContent = data.message
-      div?.appendChild(msgelement);
+    this.userservice.getAllUser().subscribe(response => {
+      this.users = response
     })
+  }
+  chat(user: any) {
+    if (this.userservice.loggedIn()) {
+      this.router.navigate(['chat', this.currentuser,user._id])
+    }
   }
 }
