@@ -21,7 +21,6 @@ io.on('connection', socket => {
         socket.emit('user-joined', name);
     });
     socket.on('send', async(message) => {
-        //console.log(message);
         let msg = new Msg({
             msg: message.message,
             sender: message.sender,
@@ -30,15 +29,15 @@ io.on('connection', socket => {
         await msg.save();
         socket.broadcast.emit('recieve', { message: message.message, name: users[socket.id] })
     })
+    socket.on('active', (data) => {
+        socket.emit('list', { name: users })
+    })
 })
 app.get('/message/:sender/:receiver', async(req, res) => {
     let msgarr = [];
     let count = 0;
-    let message = await Msg
-        //.find({ $or: [{ sender: req.params.reciever }, { reciever: req.params.sender }, { sender: req.params.sender }, { reciever: req.params.reciever }] })
-        .find({ $or: [{ sender: req.params.sender }, { reciever: req.params.sender }] })
+    let message = await Msg.find({ $or: [{ sender: req.params.sender }, { reciever: req.params.sender }] })
     for (let i = 0; i < message.length; i++) {
-        // console.log(req.params.receiver)
         if ((message[i].reciever == req.params.receiver) && (message[i].sender == req.params.sender) || (message[i].reciever == req.params.sender) && (message[i].sender == req.params.receiver)) {
             msgarr[count] = message[i];
             count++;

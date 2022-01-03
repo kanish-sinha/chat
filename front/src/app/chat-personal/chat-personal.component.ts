@@ -14,6 +14,7 @@ export class ChatPersonalComponent implements OnInit {
   url = 'http://localhost:8080';
   allmessage: any;
   socket: any; arr: any;
+  count = 0;
   constructor(private service: UsersService, private route: ActivatedRoute,
     private messageService: MessageService, private router: Router) {
     this.service.getAllUser().subscribe(response => {
