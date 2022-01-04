@@ -14,8 +14,7 @@ export class LoginComponent implements OnInit {
     'email': new FormControl('', [Validators.required, Validators.email]),
     'password': new FormControl('', [Validators.required])
   })
-  constructor(private service: UsersService, private router: Router,
-    private route: ActivatedRoute) { }
+  constructor(private service: UsersService, private router: Router) { }
 
   ngOnInit(): void {
     this.service.getAllUser().subscribe(response => this.users = response);
@@ -34,8 +33,7 @@ export class LoginComponent implements OnInit {
     //})
   }
   submit(form: any) {
-    let data = form.value; let count = 0;
-    console.log(form.value);
+    let data = form.value;
     for (var i = 0; i < this.users.length; i++) {
       if (this.users[i].email === data.email) {
         if (this.users[i].password === data.password) {

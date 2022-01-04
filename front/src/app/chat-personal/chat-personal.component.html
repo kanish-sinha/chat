@@ -22,7 +22,7 @@
                                 <p>
                                     <span [matBadge]="count" matBadgeOverlap="false">{{item.username|titlecase}}</span>
                                 </p>
-                                <!-- <div class="small"><span class="fas fa-circle chat-online"></span> Online</div> -->
+                                <div *ngIf="item.status" class="small"><i class="bi bi-circle-fill">Online</i></div>
                             </div>
                         </div>
                     </div>

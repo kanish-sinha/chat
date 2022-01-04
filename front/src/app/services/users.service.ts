@@ -13,7 +13,10 @@ export class UsersService {
   getUser(id: any) {
     return this.http.get(this.url + '/' + id)
   }
-  loggedIn(){
+  addUser(data: any) {
+    return this.http.post(this.url + '/signup', data)
+  }
+  loggedIn() {
     return !!localStorage.getItem('token');
   }
 }

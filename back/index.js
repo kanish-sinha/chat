@@ -18,7 +18,7 @@ io.on('connection', socket => {
     socket.on('new-user-joined', async(name) => {
         const user = await User.findById(name)
         users[socket.id] = user.username;
-        socket.emit('user-joined', name);
+        socket.broadcast.emit('user-joined', users[socket.id]);
     });
     socket.on('send', async(message) => {
         let msg = new Msg({

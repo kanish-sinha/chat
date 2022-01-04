@@ -35,6 +35,13 @@ export class ChatPersonalComponent implements OnInit {
     })
     this.socket = io.connect(this.url)
     this.socket.emit('new-user-joined', this.sender)
+    this.socket.on('user-joined', (data: any) => {
+      for (let i = 0; i < this.users.length; i++) {
+        if (data === this.users[i].username) {
+          this.users[i].status = true
+        }
+      }
+    })
     this.socket.on('recieve', (data: any) => {
       let div = document.getElementById('box')
       const msgelement = document.createElement('div');
