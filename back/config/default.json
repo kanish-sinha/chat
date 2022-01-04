@@ -1,0 +1,4 @@
+{
+    "data": "mongodb://localhost:27017/chat",
+    "port": "8080"
+}

@@ -1,7 +1,8 @@
 const userrout = require('./routs/userorut')
 const express = require('express');
 const app = express();
-const cors = require('cors')
+const cors = require('cors');
+const config = require('config');
 var server = require('http').createServer(app);
 var io = require('socket.io')(server, {
     cors: {
@@ -51,7 +52,7 @@ app.get('/message/:id', async(req, res) => {
 })
 app.use('/user', userrout)
 app.use('/user/:id', userrout)
-server.listen(8080, {
+server.listen(config.get('port'), {
     cors: {
         origin: '*',
     }

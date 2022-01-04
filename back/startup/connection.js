@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-let url = 'mongodb://localhost:27017/chat'
+const config = require('config')
+let url = config.get('data');
 module.exports = function() {
     mongoose.connect(url)
         .then(() => console.log('Connected succesfully :', url))
